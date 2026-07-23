@@ -2,20 +2,35 @@ import './App.css'
 import { useState } from 'react'
 import { films } from './components/data'
 
+
 const App = () => {
 
-  const [filter, setFilter] = useState(``);
+  const [filter, setFilter] = useState({input: ``, select: ``});
+
+  console.log(filter.select)
 
   return (
     <>
 
-      <input type="text" placeholder='Search' value={filter} onChange={e => setFilter(e.target.value)} />
+      <input type="text" placeholder='Search' value={filter.input} onChange={e => setFilter({...filter, input: e.target.value})} />
+
+      <select name="films-genders" id="select-films-genders" value={filter.select} onChange={e => setFilter({...filter, select: e.target.value})}>
+
+        <option value="">Tutti i generi</option>
+
+        {[...new Set(films.map(f => f.genre))].map(el => (
+
+          <option key={el} value={el}>{el}</option>
+
+        ))}
+
+      </select>
 
       <ul>
 
         {/*r Assunzione: i titoli dei film sono univoci */}
 
-        {films.filter(films => films.title.toLocaleLowerCase().includes(filter)).map(el => (
+        {films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)).map(el => (
 
           <li key={el.title}>
 
