@@ -8,7 +8,7 @@ const App = () => {
   const [filter, setFilter] = useState({input: ``, select: ``});
   const [filteredFilm, setFilteredfilm] = useState([]);
 
-  useEffect(() => {setFilteredfilm(films.filter(films => films.genre === filter.select && films.title.toLowerCase().includes(filter.input)))}, [filter])
+  useEffect(() => {setFilteredfilm(films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)))}, [filter])
 
   return (
     <>
