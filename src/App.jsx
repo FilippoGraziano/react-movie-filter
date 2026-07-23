@@ -1,48 +1,28 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { films } from './components/data'
+import { filmGenre, films } from './components/data'
+import Filter from './components/jsx-componrnts/Filter';
+import FilmList from './components/jsx-componrnts/Filmlist';
+import Form from './components/jsx-componrnts/Form';
 
 
 const App = () => {
 
   const [filter, setFilter] = useState({input: ``, select: ``});
   const [filteredFilm, setFilteredfilm] = useState([]);
+  const [_films, setFilms] = useState(films)
 
-  useEffect(() => {setFilteredfilm(films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)))}, [filter])
+  useEffect(() => {setFilteredfilm(_films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)))}, [_films, filter])
 
   return (
     <>
 
-      <input type="text" placeholder='Search' value={filter.input} onChange={e => setFilter({...filter, input: e.target.value})} />
+      <Filter films={_films} filter={filter} setFilter={setFilter} />
 
-      <select name="films-genders" id="select-films-genders" value={filter.select} onChange={e => setFilter({...filter, select: e.target.value})}>
+      <FilmList filteredFilms={filteredFilm} />
 
-        <option value="">Tutti i generi</option>
+      <Form films={_films} setFilms={setFilms} filmsGenre={filmGenre} />
 
-        {[...new Set(films.map(f => f.genre))].map(el => (
-
-          <option key={el} value={el}>{el}</option>
-
-        ))}
-
-      </select>
-
-      <ul>
-
-        {/*r Assunzione: i titoli dei film sono univoci */}
-
-        {filteredFilm.map(el => (
-
-          <li key={el.title}>
-
-            <h2>{el.title}</h2>
-            <p>{el.genre}</p>
-
-          </li>
-
-        ))}
-
-      </ul>
     </>
   )
 }
