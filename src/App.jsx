@@ -1,13 +1,14 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { films } from './components/data'
 
 
 const App = () => {
 
   const [filter, setFilter] = useState({input: ``, select: ``});
+  const [filteredFilm, setFilteredfilm] = useState([]);
 
-  console.log(filter.select)
+  useEffect(() => {setFilteredfilm(films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)))}, [filter])
 
   return (
     <>
@@ -30,7 +31,7 @@ const App = () => {
 
         {/*r Assunzione: i titoli dei film sono univoci */}
 
-        {films.filter(films => films.genre.includes(filter.select) && films.title.toLowerCase().includes(filter.input)).map(el => (
+        {filteredFilm.map(el => (
 
           <li key={el.title}>
 
